@@ -1,0 +1,71 @@
+conf t
+
+mpls ip
+
+interface Loopback0
+ ip address 172.20.22.2 255.255.255.255
+ no shutdown
+exit
+
+ip vrf Blue
+ rd 65002:100
+ route-target both 65002:100
+exit
+
+interface GigabitEthernet2
+ ip address 10.10.12.2 255.255.255.0
+ mpls ip
+ no shutdown
+exit
+
+interface GigabitEthernet3
+ ip address 10.10.23.1 255.255.255.0
+ mpls ip
+ no shutdown
+exit
+
+interface GigabitEthernet4
+ ip vrf forwarding Blue
+ ip address 192.168.1.1 255.255.255.0
+ no shutdown
+exit
+
+interface GigabitEthernet5
+ ip address 10.10.15.5 255.255.255.0
+ no shutdown
+exit
+
+router ospf 1
+ network 10.10.12.0 0.0.0.255 area 0
+ network 10.10.23.0 0.0.0.255 area 0
+ network 172.20.22.2 0.0.0.0 area 0
+exit
+
+router bgp 65002
+ neighbor 172.20.22.3 remote-as 65002
+ neighbor 172.20.22.3 update-source Loopback0
+ neighbor 10.10.15.2 remote-as 65002
+ neighbor 10.10.15.2 update-source Loopback0
+
+ address-family ipv4
+  neighbor 10.10.15.2 activate
+  neighbor 10.10.15.2 next-hop-self
+  neighbor 172.20.22.3 activate
+  neighbor 172.20.22.3 next-hop-self
+ exit
+
+ address-family vpnv4
+  neighbor 172.20.22.3 activate
+  neighbor 172.20.22.3 send-community both
+  neighbor 172.20.22.3 next-hop-self
+  neighbor 10.10.15.2 activate
+  neighbor 10.10.15.2 send-community extended
+  neighbor 10.10.15.2 next-hop-self
+ exit
+
+ address-family ipv4 vrf Blue
+  redistribute connected
+ exit
+exit
+exit
+exit

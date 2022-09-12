@@ -1,0 +1,64 @@
+conf t
+
+mpls ip
+
+interface Loopback0
+ ip address 172.20.22.3 255.255.255.255
+ no shutdown
+exit
+
+interface GigabitEthernet2
+ ip address 10.10.13.2 255.255.255.0
+ mpls ip
+ no shutdown
+exit
+
+interface GigabitEthernet3
+ ip address 10.10.23.2 255.255.255.0
+ mpls ip
+ no shutdown
+exit
+
+interface GigabitEthernet4
+ ip address 10.10.15.3 255.255.255.0
+ no shutdown
+exit
+
+router ospf 1
+ network 10.10.13.0 0.0.0.255 area 0
+ network 10.10.23.0 0.0.0.255 area 0
+ network 172.20.22.3 0.0.0.0 area 0
+exit
+
+router bgp 65002
+ neighbor 10.10.15.2 remote-as 65002
+ neighbor 10.10.15.2 update-source Loopback0
+ neighbor 172.20.22.1 remote-as 65002
+ neighbor 172.20.22.1 update-source Loopback0
+ neighbor 172.20.22.2 remote-as 65002
+ neighbor 172.20.22.2 update-source Loopback0
+
+ address-family ipv4
+  neighbor 10.10.15.2 activate
+  neighbor 10.10.15.2 next-hop-self
+  neighbor 172.20.22.1 activate
+  neighbor 172.20.22.1 route-reflector-client
+  neighbor 172.20.22.2 activate
+  neighbor 172.20.22.2 route-reflector-client
+ exit
+
+ address-family vpnv4
+  neighbor 10.10.15.2 activate
+  neighbor 10.10.15.2 send-community extended
+  neighbor 10.10.15.2 next-hop-self
+  neighbor 172.20.22.1 activate
+  neighbor 172.20.22.1 send-community extended
+  neighbor 172.20.22.1 route-reflector-client
+  neighbor 172.20.22.2 activate
+  neighbor 172.20.22.2 send-community extended
+  neighbor 172.20.22.2 route-reflector-client
+ exit
+
+exit
+exit
+exit

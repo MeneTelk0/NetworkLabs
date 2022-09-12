@@ -1,0 +1,40 @@
+[global.config]
+  as = 65002
+  router-id = "10.10.15.2"
+#   local-address-list = ["10.10.15.2", "66:70:34:db:03:38"]
+
+# PE router-1
+[[neighbors]]
+  [neighbors.config]
+    neighbor-address = "172.20.22.1"
+    peer-as = 65002
+  [[neighbors.afi-safis]]
+    [neighbors.afi-safis.config]
+      afi-safi-name = "ipv4-unicast"
+  [[neighbors.afi-safis]]
+    [neighbors.afi-safis.config]
+      afi-safi-name = "l3vpn-ipv4-unicast"
+
+# PE router-2
+[[neighbors]]
+  [neighbors.config]
+    neighbor-address = "172.20.22.2"
+    peer-as = 65002
+  [[neighbors.afi-safis]]
+    [neighbors.afi-safis.config]
+      afi-safi-name = "ipv4-unicast"
+  [[neighbors.afi-safis]]
+    [neighbors.afi-safis.config]
+      afi-safi-name = "l3vpn-ipv4-unicast"
+
+# RR router-3
+[[neighbors]]
+  [neighbors.config]
+    neighbor-address = "172.20.22.3"
+    peer-as = 65002
+  [[neighbors.afi-safis]]
+    [neighbors.afi-safis.config]
+      afi-safi-name = "ipv4-unicast"
+  [[neighbors.afi-safis]]
+    [neighbors.afi-safis.config]
+      afi-safi-name = "l3vpn-ipv4-unicast"
