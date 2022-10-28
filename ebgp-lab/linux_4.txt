@@ -1,0 +1,4 @@
+ip addr add 172.13.0.2/24 dev eth1
+ip route delete default
+ip route add default via 172.13.0.1 dev eth1
+exit

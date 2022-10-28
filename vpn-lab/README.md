@@ -21,7 +21,7 @@ Wait until all containers will be in 'healthy' state (you can check it via '`doc
 ./configure_routers.sh
 ```
 
-Now we want can also start GoBGP instance:
+Now we can also start GoBGP instance:
 ```
 sudo -E gobgpd -f gobgp_conf.toml 
 ```
