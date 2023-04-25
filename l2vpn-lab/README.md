@@ -1,4 +1,4 @@
-# L2VPN Network Lab
+# L2VPN VPLS Network Lab
 
 Lab topology:
 ![L2VPN lab topology logo](l2vpn-lab.png "L2VPN lab topology")
