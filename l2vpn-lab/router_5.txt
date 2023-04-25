@@ -1,0 +1,15 @@
+conf t
+interface Loopback0
+ ip address 172.20.23.1 255.255.255.255
+ no shutdown
+exit
+
+interface GigabitEthernet2
+ ip address 192.168.0.2 255.255.255.0
+ no shutdown
+exit
+
+ip route 0.0.0.0 0.0.0.0 192.168.0.1
+
+exit
+exit

@@ -1,0 +1,53 @@
+name: l2vpn_lab
+
+mgmt:
+    ipv4_subnet: 172.20.20.0/24
+
+topology:
+    nodes:
+        br-gobgp-router:
+            kind: bridge
+        linux-1:
+            kind: linux
+            image: someguy123/net-tools:latest
+            mgmt_ipv4: 172.20.20.2
+
+        router-1:
+            kind: vr-csr
+            mgmt_ipv4: 172.20.20.11
+            image: vrnetlab/vr-csr:16.04.02
+        router-2:
+            kind: vr-csr
+            mgmt_ipv4: 172.20.20.12
+            image: vrnetlab/vr-csr:16.04.02
+        router-3:
+            kind: vr-csr
+            mgmt_ipv4: 172.20.20.13
+            image: vrnetlab/vr-csr:16.04.02
+        router-4:
+            kind: vr-csr
+            mgmt_ipv4: 172.20.20.14
+            image: vrnetlab/vr-csr:16.04.02
+        router-5:
+            kind: vr-csr
+            mgmt_ipv4: 172.20.20.15
+            image: vrnetlab/vr-csr:16.04.02
+        router-6:
+            kind: vr-csr
+            mgmt_ipv4: 172.20.20.16
+            image: vrnetlab/vr-csr:16.04.02
+    links:
+        - endpoints: ["router-1:eth1", "router-2:eth1"]
+        - endpoints: ["router-1:eth2", "router-3:eth1"]
+        - endpoints: ["router-1:eth3", "router-4:eth1"]
+        - endpoints: ["router-1:eth4", "router-5:eth1"]
+
+        - endpoints: ["router-2:eth2", "router-3:eth2"]
+        - endpoints: ["router-2:eth3", "router-6:eth1"]
+        
+        - endpoints: ["router-4:eth2", "linux-1:eth1"]
+
+        # Connection to gobgp bridge of PEs (routers 1-2) and RR (router 3)
+        - endpoints: ["router-1:eth5", "br-gobgp-router:eth1"]
+        - endpoints: ["router-2:eth4", "br-gobgp-router:eth2"]
+        - endpoints: ["router-3:eth3", "br-gobgp-router:eth3"]

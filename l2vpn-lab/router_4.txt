@@ -1,0 +1,23 @@
+conf t
+interface Loopback0
+ ip address 172.20.21.1 255.255.255.255
+ no shutdown
+exit
+
+interface GigabitEthernet2
+ ip address 101.0.0.1 255.255.255.252
+ no shutdown
+exit
+
+interface GigabitEthernet3
+ ip address 172.16.0.1 255.255.255.0
+ no shutdown
+exit
+ 
+router bgp 65001
+ bgp router-id 172.20.21.1
+ neighbor 101.0.0.2 remote-as 65002
+ network 172.16.0.0 mask 255.255.255.0
+exit
+exit
+exit
